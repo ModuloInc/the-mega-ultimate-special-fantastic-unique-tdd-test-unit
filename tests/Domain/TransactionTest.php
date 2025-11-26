@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Domain;
 
 use PHPUnit\Framework\TestCase;
+use App\Domain\Transaction;
 use InvalidArgumentException;
 
 class TransactionTest extends TestCase

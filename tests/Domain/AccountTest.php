@@ -1,31 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Domain;
 
 use PHPUnit\Framework\TestCase;
+use App\Domain\User;
+use App\Domain\Account;
+use App\Domain\Transaction;
+use App\Domain\Exception\InsufficientBalanceException;
+use App\Domain\Exception\InvalidAmountException;
 
 class AccountTest extends TestCase
 {
-    private Teenager $teenager;
+    private User $user;
 
     protected function setUp(): void
     {
-        $this->teenager = new Teenager(1, 'Alice');
+        $this->user = new User(1, 'Alice');
     }
 
     public function testCreateAccountWithZeroBalance(): void
     {
-        $account = new Account(1, $this->teenager);
+        $account = new Account(1, $this->user);
 
         $this->assertEquals(1, $account->getId());
-        $this->assertEquals($this->teenager, $account->getTeenager());
+        $this->assertEquals($this->user, $account->getUser());
         $this->assertEquals(0.0, $account->getBalance());
         $this->assertEmpty($account->getTransactions());
     }
 
     public function testDepositIncreasesBalance(): void
     {
-        $account = new Account(1, $this->teenager);
+        $account = new Account(1, $this->user);
         $amount = 50.0;
 
         $account->deposit($amount, 'Allocation initiale');
@@ -39,7 +46,7 @@ class AccountTest extends TestCase
 
     public function testDepositNegativeAmountThrowsException(): void
     {
-        $account = new Account(1, $this->teenager);
+        $account = new Account(1, $this->user);
         $amount = -10.0;
 
         $this->expectException(InvalidAmountException::class);
@@ -50,7 +57,7 @@ class AccountTest extends TestCase
 
     public function testDepositZeroAmountThrowsException(): void
     {
-        $account = new Account(1, $this->teenager);
+        $account = new Account(1, $this->user);
         $amount = 0.0;
 
         $this->expectException(InvalidAmountException::class);
@@ -61,7 +68,7 @@ class AccountTest extends TestCase
 
     public function testRecordExpenseDecreasesBalance(): void
     {
-        $account = new Account(1, $this->teenager);
+        $account = new Account(1, $this->user);
         $account->deposit(100.0, 'Allocation initiale');
         $expenseAmount = 30.0;
 
@@ -76,7 +83,7 @@ class AccountTest extends TestCase
 
     public function testRecordExpenseExceedingBalanceThrowsException(): void
     {
-        $account = new Account(1, $this->teenager);
+        $account = new Account(1, $this->user);
         $account->deposit(50.0, 'Allocation initiale');
         $expenseAmount = 100.0;
 
@@ -88,7 +95,7 @@ class AccountTest extends TestCase
 
     public function testRecordExpenseWithZeroAmountThrowsException(): void
     {
-        $account = new Account(1, $this->teenager);
+        $account = new Account(1, $this->user);
         $account->deposit(50.0, 'Allocation initiale');
 
         $this->expectException(InvalidAmountException::class);
@@ -99,7 +106,7 @@ class AccountTest extends TestCase
 
     public function testMultipleTransactions(): void
     {
-        $account = new Account(1, $this->teenager);
+        $account = new Account(1, $this->user);
 
         $account->deposit(100.0, 'Allocation initiale');
         $account->deposit(50.0, 'Argent supplémentaire');
@@ -113,7 +120,7 @@ class AccountTest extends TestCase
 
     public function testRecordExpenseEqualToOneHundredPercentOfBalance(): void
     {
-        $account = new Account(1, $this->teenager);
+        $account = new Account(1, $this->user);
         $account->deposit(50.0, 'Allocation initiale');
         $expenseAmount = 50.0;
 
@@ -124,7 +131,7 @@ class AccountTest extends TestCase
 
     public function testTransactionHistoryIsRecorded(): void
     {
-        $account = new Account(1, $this->teenager);
+        $account = new Account(1, $this->user);
 
         $account->deposit(100.0, 'Premier dépôt');
         $account->recordExpense(30.0, 'Première dépense');

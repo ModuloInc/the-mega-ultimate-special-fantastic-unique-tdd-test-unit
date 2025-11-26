@@ -1,8 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Service;
 
 use PHPUnit\Framework\TestCase;
+use App\Domain\User;
+use App\Domain\Account;
+use App\Service\AccountService;
+use App\Domain\Exception\InsufficientBalanceException;
+use App\Domain\Exception\InvalidAmountException;
 use InvalidArgumentException;
 
 class AccountServiceTest extends TestCase
