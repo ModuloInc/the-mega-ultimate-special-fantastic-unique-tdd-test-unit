@@ -1,6 +1,10 @@
 /vendor/
 /.phpunit.cache/
-/.php-cs-fixer.cache
-/phpstan-baseline.neon
-composer.lock
-
+/coverage.xml
+/.phpunit.result.cache
+deployment.tar.gz
+artifact/
+.env
+*.log
+.idea/
+.vscode/
