@@ -28,3 +28,10 @@ make check         # Vérifie tout (lint + analyse + tests)
 ## Documentation
 
 📖 **[Documentation complète MyWeeklyAllowance](./docs/MYWEEKLYALLOWANCE.md)**
+
+Groupe
+
+Imrane Mesbahi
+Florian Pacard
+Hugo Pigree
+Anthony Zhao
